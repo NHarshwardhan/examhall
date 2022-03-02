@@ -1,0 +1,138 @@
+1)index.js
+const express = require('express');
+const app = express();
+app.listen(3000,()=>console.log('Listening on port 3000....'));
+
+2)auth.js
+const router = require('express').Router();
+router.post('/register',(req,res)=>{
+    res.send('Register');
+})
+module.exports = router;
+
+
+3)index.js
+// Import Routes
+const authRoute = require('./routes/auth');
+
+// Route Middleware
+app.use('/api/user',authRoute);
+
+4)
+Open postman and check for post route
+/api/user/register
+
+
+5)Connect to database
+  =>npm i mongose
+  => open cloud.mongodb.com
+  => create a new cluster
+       =>keep at it it
+       =>Create
+  =>Create a new user    
+  =>Network access
+  => Cluster->connect->select an app->Get Conn String  
+
+  index.js  
+  => 
+    const mongoose  = require('mongoose');
+    // Connect to DB
+    mongoose.connect(
+        'mongodb+srv://nHarsh:<zaq1zaq1>@cluster0.sinhd.mongodb.net/<dbname>?retryWrites=true&w=majority',
+        { useNewUrlParser: true },
+        ()=>console.log('connected to db')
+    )
+  => Hide the password by package dotenv
+      ->npm i dotnev  
+      ->create .env file
+      ->DB_CONNECT=mongodb+srv://nHarsh:<zaq1zaq1>@cluster0.sinhd.mongodb.net/<dbname>?retryWrites=true&w=majority
+  
+  => Replace
+     dotenv.config();
+        mongoose.connect(process.env.DB_CONNECT,{useNewUrlParser: true},()=>
+                console.log('connected to db')
+        )
+   
+
+6) Create model
+    /root/model/User.js
+    -> write all code given in this file
+
+
+7) Auth.js
+    -> import User model
+    -> router.post('/register',(req,res)=>{
+        
+            const user = new User({
+                name:req.body.name,
+                email:req.body.email,
+                password:req.body.password,
+            });
+        });
+     ->index.js
+        // Middleware
+            app.user(express.json());
+
+      ->auth.js
+          try{
+            const savedUser = await user.save();
+            res.send(savedUser);
+            }
+            catch(err){
+                res.status(400).send(err);
+            }     
+
+ 8) Validation with JOI
+    =>npm i joi
+    =>Create validation.js
+      ->Take complete code
+      ->Test
+
+   =>Auth.js
+      -> import validation   
+      -> call validation function before saving
+      -> Check Email exists or not
+      -> Store password as Hash Format
+         ->npm i bcryptjs
+         -> import bcryptjs here
+         ->write code for hashing 
+      ->Test    
+      ->hide all response just print id
+         =>res.send({user:user._id});
+      ->Create new login route with POst method
+        => Add validation
+        =>check user exist or not
+        =>check password is correct or not
+        =>send message Logged In  
+        =>Test ->/login(email,password)
+
+        
+9) Work with Jwt
+   => check the jwt.txt
+   =>install jwt- npm i jsonwebtoken
+   =>Auth.js
+     -> import jwt
+     ->create and assign token before loggedin
+     ->open .env file and add TOKEN_SECRET
+     ->Test and get Jwt token
+     ->visit jwt.io website and paste token
+   =>create a file verifyToken.js
+     ->  Add the given code
+
+10) Add new post.js route file
+    => add the command     
+    =>index.js
+        -> add route middleware
+
+    =>import verifyToken.js
+        ->add second paramter in route    
+
+
+11)
+Test
+ -> /api/posts ->Access denied
+ ->api/user/login -> post->send -> Got token
+ ->api/posts ->Get-> headers->add 
+            'auth-token' : 'paste token' ->send ->got post
+
+  
