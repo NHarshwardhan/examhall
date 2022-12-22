@@ -3,6 +3,7 @@ const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const User = require('../model/User');
 const {registerValidation,loginValidation} = require('../validation');
+const CryptoJS = require('crypto-js');
 
 
 // router.post('/register',(req,res)=>{
@@ -46,6 +47,7 @@ router.post('/register', async (req,res)=>{
         name:req.body.name,
         email:req.body.email,
         password:hashPassword,
+        role:req.body.role
     });
 
     try{
@@ -65,19 +67,9 @@ router.get('/list',verifyToken, async (req,res)=>{
   
 })
 
-// router.get('/list', async (req,res)=>{
-//     res.send({
-//         text: 'I am Verified'
-//     })
- 
-// })
 
 // Login ROute
 router.post('/login', async (req,res)=>{
-    // // Validation Part
-    // const error = loginValidation(req.body);
-    // if(error) return res.status(400).send(error.details[0].message);
-
 
     //Check if the user is already in the database
     const user = await User.findOne({email:req.body.email});
@@ -87,10 +79,13 @@ router.post('/login', async (req,res)=>{
     // Password is correct
     const validPass = await bcrypt.compare(req.body.password ,user.password);
     if(!validPass) return res.status(400).send('Invalid Password');
-
+      
+    // Role encryption
+     const passphrase = 'djfurh2323239!@#$$XZSSE#';
+     let role =  CryptoJS.AES.encrypt(user.role, passphrase).toString();
     // Create and assign token
-    const token = jwt.sign({_id:user._id},process.env.TOKEN_SECRET);
-    res.header('auth-token',token).send({token:token});
+     const token = jwt.sign({_id:user._id},process.env.TOKEN_SECRET);
+     res.header('auth-token',token).send({token:token,role:role});
 
     // res.send('Logged in.!');
 
