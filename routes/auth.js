@@ -68,7 +68,7 @@ router.get('/list',verifyToken, async (req,res)=>{
 })
 
 router.get('/',(req,res)=>{
-    User.find().sort({date:-1}).exec((err, results) => {
+    User.find({role:'student'}).sort({date:-1}).exec((err, results) => {
     if (err) throw err;
      res.json(results)
   });
