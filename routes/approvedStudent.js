@@ -59,17 +59,11 @@ router.get("/", (req, res) => {
   });
 });
 router.get("/:id", (req, res) => {
-     let parameter = req.params.id
-     ApprovedStudent.findById({_id:req.params.id},(err,result)=>{
+      ApprovedStudent.findById({_id:req.params.id},(err,result)=>{
          if(err) throw err;
          res.json(result);
     })
 });
-router.get("/email/:email", (req, res) => {
-     ApprovedStudent.findById({email:req.params.email},(err,result)=>{
-         if(err) throw err;
-         res.json(result);
-    })
-});
+
 
 module.exports = router;
