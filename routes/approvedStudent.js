@@ -58,5 +58,11 @@ router.get("/", (req, res) => {
     res.json(results);
   });
 });
+router.get("/:id", (req, res) => {
+     ApprovedStudent.findById({_id:req.params.id},(err,result)=>{
+         if(err) throw err;
+         res.json(result);
+    })
+});
 
 module.exports = router;
