@@ -67,7 +67,12 @@ router.get('/list',verifyToken, async (req,res)=>{
   
 })
 
-
+router.get('/users',verifyToken,(res,req)=>{
+    User.find().exec((err,results)=>{
+        if(err) throw err
+        res.json(results)
+    })
+})
 // Login ROute
 router.post('/login', async (req,res)=>{
 
