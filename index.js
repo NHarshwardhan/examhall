@@ -22,6 +22,7 @@ const approvedStudentRoute = require('./routes/approvedStudent');
 // Route Middleware
 app.use('/api/user',authRoute);
 app.use('/api/posts',postRoute);
+app.use('/api/courses',courseRoute);
 app.use('/api/papers',paperRoute);
 app.use('/api/approvedStudent',approvedStudentRoute);
 
