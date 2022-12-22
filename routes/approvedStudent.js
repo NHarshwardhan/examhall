@@ -33,6 +33,25 @@ router.post("/", (req, res) => {
   
 });
 
+router.put("/:id", (req, res) => {
+   ApprovedStudent.findById({_id:req.params.id},(err,document)=>{
+        if(err) throw err;
+         document.name= req.body.name,
+         document.email= req.body.email,
+         document.password= req.body.password,
+         document.role= req.body.role,
+         document. examkey= req.body.examkey,
+         document. examname= req.body.examname
+
+        document.save((err,updatedRecord)=>{
+           if(err) throw err;
+           res.json({'status':'student updated successfully'});
+        })
+    })
+   
+  
+});
+
 router.get("/", (req, res) => {
     ApprovedStudent.find().exec((err, results) => {
     if (err) throw err;
