@@ -85,7 +85,7 @@ router.post('/login', async (req,res)=>{
      let role =  CryptoJS.AES.encrypt(user.role, passphrase).toString();
     // Create and assign token
      const token = jwt.sign({_id:user._id},process.env.TOKEN_SECRET);
-     res.header('auth-token',token).send({token:token,role:role});
+     res.header('auth-token',token).send({token:token,role:role,email:user.email});
 
     // res.send('Logged in.!');
 
