@@ -67,10 +67,10 @@ router.get('/list',verifyToken, async (req,res)=>{
   
 })
 
-router.get('/',verifyToken,(res,req)=>{
+router.get('/',(req,res)=>{
     User.find().exec((err, results) => {
     if (err) throw err;
-    res.json(results);
+     res.json(results)
   });
 })
 // Login ROute
